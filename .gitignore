@@ -13,3 +13,6 @@ pyproject.toml
 .env
 pycache/
 uv.lock
+
+#mine
+text.txt
