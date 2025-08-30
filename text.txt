@@ -1,8 +1,0 @@
-Result for 'calculator' directory: 
-tests.py: file_size: 1343 bytes, is_dir=False
-main.py: file_size: 576 bytes, is_dir=False
-pkg: file_size: 4096 bytes, is_dir=True
-Result for 'pkg' directory: 
-render.py: file_size: 767 bytes, is_dir=False
-calculator.py: file_size: 1738 bytes, is_dir=False
-__pycache__: file_size: 4096 bytes, is_dir=True

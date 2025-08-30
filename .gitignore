@@ -12,7 +12,8 @@ pyproject.toml
 .venv
 .env
 pycache/
+
 uv.lock
 
 #mine
-text.txt
+/home/user1/workspace/github.com/defau1tuser0/ai_agent/text.txt
