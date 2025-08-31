@@ -5,6 +5,7 @@ from google.genai import types
 from dotenv import load_dotenv
 
 from config import SYSTEM_PROMPT
+from availabe_functions import available_functions
 
 
 def main():
@@ -41,13 +42,21 @@ def generate_content(client, messages, verbose):
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=messages,
-        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
+        config=types.GenerateContentConfig(
+            tools=[available_functions], #what fn to use
+            system_instruction=SYSTEM_PROMPT), #SP > up
     )
     if verbose:
         print("Prompt tokens:", response.usage_metadata.prompt_token_count)
         print("Response tokens:", response.usage_metadata.candidates_token_count)
     print("Response:")
-    print(response.text)
+
+    if response.candidates[0].content.parts[0].function_call: #accessing fn_call
+        function_call = response.candidates[0].content.parts[0].function_call
+        print(f"Calling function: {function_call.name}({function_call.args})")
+    else:
+        print("No function call found in response")
+        print(response.text)
 
 
 if __name__ == "__main__":
