@@ -14,13 +14,13 @@ def run_python_file(working_directory, file_path, args=None):
     try:
         commands = ["python", abs_file_path]
         if args:
-            commands.extend(args)
+            commands.extend(args) #extend not append cuz args is list and we want to add each...
         result = subprocess.run(
             commands,
+            cwd=abs_working_dir,
             capture_output=True,
             text=True,
             timeout=30,
-            cwd=abs_working_dir,
         )
         output = []
         if result.stdout:
