@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from config import SYSTEM_PROMPT
 from availabe_functions import available_functions
+from call_function import call_function
 
 
 def main():
@@ -53,11 +54,19 @@ def generate_content(client, messages, verbose):
 
     if response.candidates[0].content.parts[0].function_call: #accessing fn_call
         function_call = response.candidates[0].content.parts[0].function_call
-        print(f"Calling function: {function_call.name}({function_call.args})")
+        # print(f"Calling function: {function_call.name}({function_call.args})")
+        function_call_result = call_function(function_call) #calling the fn
+
+        if not function_call_result.parts[0].function_response.response:
+            raise Exception("No fn_response")
+
+        if function_call_result.parts[0].function_response.response and verbose:
+            print(f"-> {function_call_result.parts[0].function_response.response}")
+        else:
+            print("No verbose")
     else:
         print("No function call found in response")
         print(response.text)
-
 
 if __name__ == "__main__":
     main()
