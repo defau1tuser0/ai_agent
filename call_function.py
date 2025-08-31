@@ -11,11 +11,13 @@ def call_function(function_call_part, verbose=False):
     function_name = function_call_part.name
     function_argv = function_call_part.args
 
-    if verbose:
-        print(f"Calling function: {function_name}({function_argv})")
-    else: 
-        print(f" - Calling function: {function_name}")
+    # if verbose:
+    #     print(f"Calling function: {function_name}({function_argv})")
+    # else: 
+    #     print(f" - Calling function: {function_name}")
 
+    print(f"Calling function: {function_name}({function_argv})")
+    
     working_directory = "./calculator" #we should allow ai to choice cwd thus
 
     match function_name:

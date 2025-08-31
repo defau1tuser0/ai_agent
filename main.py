@@ -35,8 +35,15 @@ def main():
     messages = [
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
+    try:
+        for x in range(0, 20):
+            response = generate_content(client, messages, verbose)
+            if response != None and response.text:
+                print(f"response: {response.text}")
+                break
 
-    generate_content(client, messages, verbose)
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def generate_content(client, messages, verbose):
@@ -52,10 +59,17 @@ def generate_content(client, messages, verbose):
         print("Response tokens:", response.usage_metadata.candidates_token_count)
     print("Response:")
 
+    for candidate in response.candidates:
+        messages.append(candidate.content)
+
     if response.candidates[0].content.parts[0].function_call: #accessing fn_call
         function_call = response.candidates[0].content.parts[0].function_call
         # print(f"Calling function: {function_call.name}({function_call.args})")
         function_call_result = call_function(function_call) #calling the fn
+
+        new_message = types.Content(role='user', parts=[types.Part(function_response=function_call_result.parts[0].function_response)])
+
+        messages.append(new_message)
 
         if not function_call_result.parts[0].function_response.response:
             raise Exception("No fn_response")
@@ -66,7 +80,8 @@ def generate_content(client, messages, verbose):
             print("No verbose")
     else:
         print("No function call found in response")
-        print(response.text)
+        return response
+
 
 if __name__ == "__main__":
     main()
