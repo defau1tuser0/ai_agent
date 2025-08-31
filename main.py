@@ -40,8 +40,6 @@ def main():
             response = generate_content(client, messages, verbose)
             if response != None and response.text:
                 print(f"response: {response.text}")
-                break
-
     except Exception as e:
         print(f"Error: {e}")
 
@@ -67,17 +65,19 @@ def generate_content(client, messages, verbose):
         # print(f"Calling function: {function_call.name}({function_call.args})")
         function_call_result = call_function(function_call) #calling the fn
 
-        new_message = types.Content(role='user', parts=[types.Part(function_response=function_call_result.parts[0].function_response)])
-
-        messages.append(new_message)
+        function_response = []
 
         if not function_call_result.parts[0].function_response.response:
             raise Exception("No fn_response")
-
+        
         if function_call_result.parts[0].function_response.response and verbose:
             print(f"-> {function_call_result.parts[0].function_response.response}")
         else:
             print("No verbose")
+
+        new_message = types.Content(role='user', parts=[types.Part(function_response=function_call_result.parts[0].function_response)])
+                                    
+        messages.append(new_message)
     else:
         print("No function call found in response")
         return response
