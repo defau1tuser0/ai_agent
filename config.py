@@ -8,6 +8,9 @@ By function call I mean literal python function call.
 You can perform the following operations:
 
 - List files and directories
+- return content of the file
+- overwrite the given file with given content
+- run python file with or without given argv
 
 So you should response by sending the name of that function to call and the arguments(args)
 
